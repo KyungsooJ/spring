@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itbank.repository.UploadDAO">
+
+	<insert id="insertUpload" parameterType="upload">
+		insert into upload2 (title) values (#{title})
+	</insert>
+	
+	<select id="selectMaxIdxFromUpload" resultType="int">
+		select max(idx) from upload2
+	</select>
+	
+	<insert id="insertFile" parameterType="hashmap">
+		insert into upload2_file (upload2, filePath)
+		
+		<foreach item="item" collection="list" separator=" UNION ALL ">
+		    select  #{upload}, #{item} from dual 
+		</foreach>
+		
+	</insert>
+	
+	
+	<select id="selectAll" resultType="upload">
+		select
+		    upload2.idx,
+		    upload2.title,
+		    (select 
+		        listagg(filePath, ',') 
+		            from upload2_file 
+		        where 
+		            upload2_file.upload2 = upload2.idx) as filePath
+	        from upload2
+	        order by idx
+	</select>
+	
+	<select id="selectFileList" parameterType="int" resultType="string">
+		select 
+		    filePath
+		        from upload2_file
+		    where
+		        upload2 = #{idx}
+	</select>
+	
+	<delete id="deleteFile" parameterType="int">
+		delete upload2_file where upload2 = #{idx}
+	</delete>
+	
+	<delete id="delete" parameterType="int">
+		delete upload2 where idx = #{idx}
+	</delete>
+	
+</mapper>
+
+
+
+
+

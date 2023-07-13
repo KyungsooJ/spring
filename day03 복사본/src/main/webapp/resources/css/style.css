@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+#list {
+	width: 900px;
+	margin: auto;
+	display: flex;
+	flex-flow: wrap;
+}
+
+.item {
+	width: 280px;
+	justify-content: center;
+	padding: 10px;
+}
+
+.item>div {
+	width: 250px;
+	margin: auto;
+}
+
+.item:hover {
+	background-color: #eee;
+}
+
+.item div>a>img {
+	width: 250px;
+	display: block;
+}
+
+.sb {
+	width: 900px;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+form textarea {
+	width: 700px;
+	height: 70px;
+	resize: none;
+}

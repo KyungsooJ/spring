@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"//mybatis.org//DTD Mapper 3.0//EN" 
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace : DAO인터페이스의 풀네임. 패키지부터 인터페이스이름까지 모두 작성한다 -->
+<mapper namespace="com.itbank.repository.Board2DAO">
+	
+	<select id="selectAll" resultType="board" parameterType="paging">
+		select * from board2
+			<if test="column != null and search != null">
+				where ${column} like '%${search}%'
+			</if>
+			order by
+				idx desc
+			offset #{offset} rows
+			fetch next #{perPage} rows only
+	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		insert into board2 
+			(title, writer, content)
+			values (
+				#{title}, #{writer}, #{content}
+			)
+	</insert>
+	
+	<select id="selectOne" resultType="board" parameterType="int">
+		select * from board2 where idx = #{idx}
+	</select>
+	
+	<update id="updateViewCount" parameterType="int">
+		update board2
+			set
+				viewcount = viewcount + 1
+			where
+				idx = #{idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete board2 where idx = #{idx}
+	</delete>
+	
+	<update id="update" parameterType="board">
+		update board2
+			set
+				title = #{title}, content = #{content}
+			where
+				idx = #{idx} and
+				writer = #{writer}
+				
+	</update>
+	
+	<select id="selectCount" resultType="int" parameterType="paging">
+		select count(*) from board2
+			<if test="column != null and search != null">
+				where ${column} like '%${search}%'
+			</if>
+	</select>
+	
+</mapper>
